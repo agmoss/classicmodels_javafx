@@ -8,8 +8,6 @@
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.SeparatorMenuItem?>
 <?import javafx.scene.control.SplitPane?>
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TreeView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
@@ -18,7 +16,7 @@
 <?import javafx.scene.paint.Color?>
 <?import javafx.scene.text.Font?>
 
-<VBox prefHeight="652.0" prefWidth="1088.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.Controller">
+<VBox prefHeight="652.0" prefWidth="1088.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.BaseController">
     <children>
         <MenuBar VBox.vgrow="NEVER">
             <menus>
@@ -68,24 +66,10 @@
                 </AnchorPane>
                 <ScrollPane prefHeight="-1.0" prefWidth="-1.0">
                     <content>
-                        <AnchorPane id="Content" minHeight="-1.0" minWidth="-1.0" prefHeight="602.0" prefWidth="717.0">
-                            <children>
-                                <TableView fx:id="tvOrders" layoutX="14.0" layoutY="22.0" prefHeight="602.0" prefWidth="718.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="-1.0" AnchorPane.topAnchor="0.0">
-                                    <columns>
-                                        <TableColumn fx:id="tcOrderNumber" prefWidth="101.0" text="Order Number" />
-                                        <TableColumn fx:id="tcOrderDate" prefWidth="109.0" text="Order Date" />
-                              <TableColumn fx:id="tcRequiredDate" prefWidth="116.0" text="Required Date" />
-                              <TableColumn fx:id="tcShippedDate" prefWidth="85.0" text="Shipped Date" />
-                              <TableColumn fx:id="tcStatus" prefWidth="60.0" text="Status" />
-                              <TableColumn fx:id="tcComments" prefWidth="103.0" text="Comments" />
-                              <TableColumn fx:id="tcCustomerNumber" prefWidth="142.0" text="Customer Number" />
-                                    </columns>
-                                </TableView>
-                            </children>
-                        </AnchorPane>
+                        <AnchorPane id="Content" fx:id="apData" minHeight="-1.0" minWidth="-1.0" prefHeight="602.0" prefWidth="717.0" />
                     </content>
                 </ScrollPane>
-                <AnchorPane>
+                <AnchorPane fx:id="apDetails">
                     <children>
                         <Label alignment="CENTER" layoutX="14.0" layoutY="14.0" style="&#10;" text="Details" textAlignment="CENTER" wrapText="false">
                      <font>
