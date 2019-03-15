@@ -1,3 +1,6 @@
+#DB Config
+connection.properties
+
 ### Java template
 *.class
 

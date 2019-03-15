@@ -1,5 +1,6 @@
 package connection;
 
+import java.io.*;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -8,13 +9,47 @@ import java.util.Properties;
 public class Connect {
 
 
+    private static Properties dbInfo()  {
+
+        Properties prop = new Properties();
+        InputStream input = null;
+
+        try {
+
+            input = new FileInputStream("connection.properties");
+
+            // load a properties file
+            prop.load(input);
+
+
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        } finally {
+            if (input != null) {
+                try {
+                    input.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        return prop;
+    }
+
+
+
     public static Connection getConnection() throws ClassNotFoundException, SQLException {
 
-        // Initialize connection variables. TODO: Hide these
-        String host = "";
-        String database = "";
-        String user = "";
-        String password = "";
+        // Get connection parameters from properties file
+        Properties props = dbInfo();
+
+        // Initialize connection variables.
+        String host = props.getProperty("db.host");
+        String database = props.getProperty("db.database");
+        String user = props.getProperty("db.username");
+        String password = props.getProperty("db.password");
+
 
         // check that the driver is installed
         try {
@@ -45,7 +80,6 @@ public class Connect {
         } catch (SQLException e) {
             throw new SQLException("Failed to create connection to database", e);
         }
-
 
         return connection;
 
