@@ -75,7 +75,7 @@ public class Connect {
             properties.setProperty("requireSSL", "false");
             properties.setProperty("serverTimezone", "UTC"); //IMPORTANT
 
-            // get connection
+            // getItem connection
             connection = DriverManager.getConnection(url, properties);
         } catch (SQLException e) {
             throw new SQLException("Failed to create connection to database", e);

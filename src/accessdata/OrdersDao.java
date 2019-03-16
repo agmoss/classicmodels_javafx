@@ -22,7 +22,12 @@ public class OrdersDao implements Dao<Order> {
 
     // Methods
     @Override
-    public Optional<Order> get(long id) {
+    public List<Order> getItems(int id) throws SQLException {
+        return null;
+    }
+
+    @Override
+    public Optional<Order> getItem(int id) {
         return Optional.empty();
     }
 

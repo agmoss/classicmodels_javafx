@@ -6,7 +6,9 @@ import java.util.Optional;
 
 public interface Dao<T> {
 
-    Optional<T> get(long id);
+    List<T> getItems(int id) throws SQLException;
+
+    Optional<T> getItem(int id) throws SQLException;
 
     List<T> getAll() throws SQLException;
 

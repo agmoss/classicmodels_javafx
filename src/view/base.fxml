@@ -2,12 +2,15 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.SeparatorMenuItem?>
 <?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TreeView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
@@ -66,19 +69,35 @@
                 </AnchorPane>
                 <ScrollPane prefHeight="-1.0" prefWidth="-1.0">
                     <content>
-                        <AnchorPane id="Content" fx:id="apData" minHeight="-1.0" minWidth="-1.0" prefHeight="602.0" prefWidth="717.0" />
+                        <AnchorPane id="Content" fx:id="apData" minHeight="-1.0" minWidth="-1.0" prefHeight="602.0" prefWidth="717.0">
+                     <children>
+                        <TableView fx:id="tvOrders" prefHeight="602.0" prefWidth="717.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                          <columns>
+                            <TableColumn fx:id="tcOrderNumber" prefWidth="75.0" text="Order Number" />
+                            <TableColumn fx:id="tcOrderDate" prefWidth="75.0" text="Order Date" />
+                              <TableColumn fx:id="tcRequiredDate" prefWidth="75.0" text="Required Date" />
+                              <TableColumn fx:id="tcShippedDate" prefWidth="75.0" text="Shipped Date" />
+                              <TableColumn fx:id="tcStatus" prefWidth="75.0" text="Status" />
+                              <TableColumn fx:id="tcComments" prefWidth="75.0" text="Comments" />
+                              <TableColumn fx:id="tcCustomerNumber" prefWidth="75.0" text="Customer Number" />
+                          </columns>
+                        </TableView>
+                     </children></AnchorPane>
                     </content>
                 </ScrollPane>
                 <AnchorPane fx:id="apDetails">
-                    <children>
-                        <Label alignment="CENTER" layoutX="14.0" layoutY="14.0" style="&#10;" text="Details" textAlignment="CENTER" wrapText="false">
-                     <font>
-                                <Font size="18.0" fx:id="x1" />
-                     </font>
-                     <textFill>
-                                <Color blue="0.624" green="0.624" red="0.624" fx:id="x2" />
-                     </textFill></Label>
-                    </children>
+               <children>
+                  <SplitPane dividerPositions="0.5416666666666666" layoutX="20.0" layoutY="157.0" orientation="VERTICAL" prefHeight="602.0" prefWidth="199.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                    <items>
+                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+                           <children>
+                              <ListView fx:id="lvDetails" layoutX="-1.0" layoutY="61.0" prefHeight="321.0" prefWidth="197.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                           </children>
+                        </AnchorPane>
+                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0" />
+                    </items>
+                  </SplitPane>
+               </children>
                 </AnchorPane>
             </items>
         </SplitPane>
