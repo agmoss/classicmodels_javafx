@@ -3,6 +3,7 @@ package view;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
@@ -56,8 +57,6 @@ public class BaseController {
 
         createTree();
 
-        apData.getChildren().setAll(Collections.singleton(FXMLLoader.load(getClass().getResource("OrdersTable.fxml"))));
-
     }
 
 
@@ -91,9 +90,26 @@ public class BaseController {
         // Accept clicks only on node cells, and not on empty spaces of the TreeView
         if (node instanceof Text || (node instanceof TreeCell && ((TreeCell) node).getText() != null)) {
             String name = (String) ((TreeItem)selectionTreeView.getSelectionModel().getSelectedItem()).getValue();
-            System.out.println("Node click: " + name);
 
-            //TODO: implement view population via selected item
+            // Load the data table for the selected item
+            switch (name){
+                case "Orders":
+                    try {
+
+                        apData.getChildren().setAll(Collections.singleton(FXMLLoader.load(getClass().getResource("OrdersTable.fxml"))));
+                        break;
+                        
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+                default:
+
+                    apData.getChildren().setAll(new AnchorPane());
+                    break;
+
+            }
+
         }
     }
 

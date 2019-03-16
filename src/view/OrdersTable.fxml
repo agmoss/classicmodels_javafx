@@ -2,20 +2,15 @@
 
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
-<?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.OrdersTableController">
-   <children>
-      <TableView fx:id="tvOrders" layoutX="200.0" layoutY="91.0" prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-        <columns>
-          <TableColumn fx:id="tcOrderNumber" prefWidth="75.0" text="Order Number" />
-          <TableColumn fx:id="tcOrderDate" prefWidth="75.0" text="Order Date" />
-            <TableColumn fx:id="tcRequiredDate" prefWidth="75.0" text="Required Date" />
-            <TableColumn fx:id="tcShippedDate" prefWidth="75.0" text="Shipped Date" />
-            <TableColumn fx:id="tcStatus" prefWidth="75.0" text="Status" />
-            <TableColumn fx:id="tcComments" prefWidth="75.0" text="Comments" />
-            <TableColumn fx:id="tcCustomerNumber" prefWidth="75.0" text="Customer Number" />
-        </columns>
-      </TableView>
-   </children>
-</AnchorPane>
+<TableView fx:id="tvOrders" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="3000.0" prefWidth="3000.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.OrdersTableController">
+  <columns>
+    <TableColumn fx:id="tcOrderNumber" prefWidth="75.0" text="Order Number" />
+    <TableColumn fx:id="tcOrderDate" prefWidth="75.0" text="Order Date" />
+      <TableColumn fx:id="tcRequiredDate" prefWidth="75.0" text="Required Date" />
+      <TableColumn fx:id="tcShippedDate" prefWidth="75.0" text="Shipped Date" />
+      <TableColumn fx:id="tcStatus" prefWidth="75.0" text="Status" />
+      <TableColumn fx:id="tcComments" prefWidth="75.0" text="Comments" />
+      <TableColumn fx:id="tcCustomerNumber" prefWidth="75.0" text="Customer Number" />
+  </columns>
+</TableView>

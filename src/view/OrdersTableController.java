@@ -74,13 +74,6 @@ public class OrdersTableController {
             List<Order> orderData = ordersAccessor.getAll();
             ObservableList<Order> orderDataOl = FXCollections.observableArrayList(orderData);
 
-
-            // Prove it works
-            for (int i = 0; i < orderData.size(); i++) {
-                Order ord = orderDataOl.get(i);
-                System.out.println(ord.getOrderNumber());
-            }
-
             tvOrders.setItems(orderDataOl);
             tcOrderNumber.setCellValueFactory(cellData -> new ReadOnlyIntegerWrapper(cellData.getValue().getOrderNumber()));
             tcOrderDate.setCellValueFactory(cell -> new SimpleObjectProperty<Date>(cell.getValue().getOrderDate()));
