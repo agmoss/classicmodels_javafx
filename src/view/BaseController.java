@@ -7,62 +7,49 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
-import javafx.util.Callback;
 import models.Order;
 import models.OrderDetails;
 
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.net.URL;
-
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.time.LocalDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.ResourceBundle;
 import java.util.function.Function;
 
 public class BaseController {
 
     @FXML
+    TreeView selectionTreeView;
+    @FXML
     private ResourceBundle resources;
-
     @FXML
     private ListView<OrderDetails> lvDetails;
-
     @FXML
     private URL location;
-
     @FXML
     private AnchorPane apData;
-
     @FXML
     private AnchorPane apDetails;
-
     @FXML
     private Font x1;
-
     @FXML
     private Color x2;
-
     @FXML
     private Font x3;
-
     @FXML
     private Color x4;
-
-    @FXML
-    TreeView selectionTreeView;
-
-
     // Orders Table
     @FXML
     private TableView<Order> tvOrders;
@@ -113,58 +100,58 @@ public class BaseController {
         populateOrders(); // Table view
 
         // Display the order details in the right hand side list view
-        tvOrders.getSelectionModel().selectedItemProperty().addListener((observable) -> {
-
-            try {
-
-                // Get the order details
-                Order selectedOrder = tvOrders.getSelectionModel().getSelectedItem();
-                Connection conn = connection.Connect.getConnection();
-                OrderDetailsDao detailsAccessor = new OrderDetailsDao(conn);
-                List<OrderDetails> odList = detailsAccessor.getItems(selectedOrder.getOrderNumber());
-                List<OrderDetails> arOdList = new ArrayList<>(odList);
-
-                ObservableList<OrderDetails> displayList =  FXCollections.observableArrayList(odList);
-
-                //populate
-                Function<OrderDetails, BigDecimal> totalMapper = a -> a.getPriceEach().multiply(BigDecimal.valueOf(a.getQuantityOrdered()));
-                BigDecimal result = arOdList.stream()
-                        .map(totalMapper).reduce(BigDecimal.ZERO, BigDecimal::add);
-
-
-                taOrderSummary.setText(result.toString());
-
-
-                // Display the order comments
-                taComments.setText(selectedOrder.getComments());
-
-                // Clear the listview
-                lvDetails.getItems().clear();
-
-                // Display the order details in the listview
-                lvDetails.setItems(displayList);
-                lvDetails.setCellFactory(param -> new ListCell<OrderDetails>() {
-                    @Override
-                    protected void updateItem(OrderDetails item, boolean empty) {
-                        super.updateItem(item, empty);
-
-                        if (empty || item == null) {
-                            setText(null);
-                        } else {
-                            setText(item.toString());
-                        }
-                    }
-                });
-
-            } catch (ClassNotFoundException e) {
-                e.printStackTrace();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-
-        });
+        tvOrders.getSelectionModel().selectedItemProperty().addListener((observable) -> displayOrderDetails());
     }
-    
+
+    private void displayOrderDetails(){
+
+        try {
+
+            // Get the order details
+            Order selectedOrder = tvOrders.getSelectionModel().getSelectedItem();
+            Connection conn = connection.Connect.getConnection();
+            OrderDetailsDao detailsAccessor = new OrderDetailsDao(conn);
+            List<OrderDetails> odList = detailsAccessor.getItems(selectedOrder.getOrderNumber());
+            List<OrderDetails> arOdList = new ArrayList<>(odList);
+
+            ObservableList<OrderDetails> displayList =  FXCollections.observableArrayList(odList);
+
+            //populate
+            Function<OrderDetails, BigDecimal> totalMapper = a -> a.getPriceEach().multiply(BigDecimal.valueOf(a.getQuantityOrdered()));
+            BigDecimal result = arOdList.stream()
+                    .map(totalMapper).reduce(BigDecimal.ZERO, BigDecimal::add);
+
+            // Display the order total
+            taOrderSummary.setText("Order Total: " +result.toString());
+
+            // Display the order comments
+            taComments.setText(selectedOrder.getComments());
+
+            // Clear the listview
+            lvDetails.getItems().clear();
+
+            // Display the order details in the listview
+            lvDetails.setItems(displayList);
+            lvDetails.setCellFactory(param -> new ListCell<OrderDetails>() {
+                @Override
+                protected void updateItem(OrderDetails item, boolean empty) {
+                    super.updateItem(item, empty);
+
+                    if (empty || item == null) {
+                        setText(null);
+                    } else {
+                        setText(item.toString());
+                    }
+                }
+            });
+
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
 
     private void populateOrders() {
 
@@ -201,16 +188,21 @@ public class BaseController {
         root.setExpanded(true);
 
         //create child
-        TreeItem<String> itemCustomers = new TreeItem<>("Customers");
-        itemCustomers.setExpanded(false);
-
-
         TreeItem<String> itemOrders = new TreeItem<>("Orders");
+        itemOrders.setExpanded(true);
+
+
+        //order options
+        TreeItem<String> itemAdd = new TreeItem<>("Add");
+        itemOrders.setExpanded(false);
+        //create child
+        TreeItem<String> itemView = new TreeItem<>("View");
         itemOrders.setExpanded(false);
 
         //root is the parent of itemChild
-        root.getChildren().add(itemCustomers);
         root.getChildren().add(itemOrders);
+        itemOrders.getChildren().add(itemAdd);
+        itemOrders.getChildren().add(itemView);
         selectionTreeView.setRoot(root);
 
         // Add the onclick event handler
@@ -225,7 +217,7 @@ public class BaseController {
         if (node instanceof Text || (node instanceof TreeCell && ((TreeCell) node).getText() != null)) {
             String name = (String) ((TreeItem)selectionTreeView.getSelectionModel().getSelectedItem()).getValue();
 
-            // TODO: Load the data table for the selected item( break this file up)
+            // TODO: Load the data table for the selected item (break this file up)
             switch (name){
                 case "Orders":
 
