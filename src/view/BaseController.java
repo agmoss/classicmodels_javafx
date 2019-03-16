@@ -21,12 +21,14 @@ import models.Order;
 import models.OrderDetails;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.net.URL;
 
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.function.Function;
 
 public class BaseController {
 
@@ -81,10 +83,13 @@ public class BaseController {
     private TableColumn<Order, String> tcStatus;
 
     @FXML
-    private TableColumn<Order, String> tcComments;
+    private TableColumn<Order, Integer> tcCustomerNumber;
 
     @FXML
-    private TableColumn<Order, Integer> tcCustomerNumber;
+    private TextArea taComments;
+
+    @FXML
+    private TextArea taOrderSummary;
 
     @FXML
     void initialize() throws IOException {
@@ -101,17 +106,14 @@ public class BaseController {
         assert tcRequiredDate != null : "fx:id=\"tcRequiredDate\" was not injected: check your FXML file 'OrdersTableController.fxml'.";
         assert tcShippedDate != null : "fx:id=\"tcShippedDate\" was not injected: check your FXML file 'OrdersTableController.fxml'.";
         assert tcStatus != null : "fx:id=\"tcStatus\" was not injected: check your FXML file 'OrdersTableController.fxml'.";
-        assert tcComments != null : "fx:id=\"tcComments\" was not injected: check your FXML file 'OrdersTableController.fxml'.";
         assert tcCustomerNumber != null : "fx:id=\"tcCustomerNumber\" was not injected: check your FXML file 'OrdersTableController.fxml'.";
+        assert taOrderSummary != null : "fx:id=\"taOrderSummary\" was not injected: check your FXML file 'base.fxml'.";
 
         createTree(); // Side Navigation
-
         populateOrders(); // Table view
 
         // Display the order details in the right hand side list view
         tvOrders.getSelectionModel().selectedItemProperty().addListener((observable) -> {
-
-            System.out.println(LocalDateTime.now() + " Item selection changed: "+tvOrders.getSelectionModel().getSelectedItem());
 
             try {
 
@@ -120,31 +122,39 @@ public class BaseController {
                 Connection conn = connection.Connect.getConnection();
                 OrderDetailsDao detailsAccessor = new OrderDetailsDao(conn);
                 List<OrderDetails> odList = detailsAccessor.getItems(selectedOrder.getOrderNumber());
+                List<OrderDetails> arOdList = new ArrayList<>(odList);
+
                 ObservableList<OrderDetails> displayList =  FXCollections.observableArrayList(odList);
 
-                // Display the order details in the listbox
+                //populate
+                Function<OrderDetails, BigDecimal> totalMapper = a -> a.getPriceEach().multiply(BigDecimal.valueOf(a.getQuantityOrdered()));
+                BigDecimal result = arOdList.stream()
+                        .map(totalMapper).reduce(BigDecimal.ZERO, BigDecimal::add);
+
+
+                taOrderSummary.setText(result.toString());
+
+
+                // Display the order comments
+                taComments.setText(selectedOrder.getComments());
+
+                // Clear the listview
+                lvDetails.getItems().clear();
+
+                // Display the order details in the listview
                 lvDetails.setItems(displayList);
-                lvDetails.setCellFactory(new Callback<ListView<OrderDetails>, ListCell<OrderDetails>>(){
-
+                lvDetails.setCellFactory(param -> new ListCell<OrderDetails>() {
                     @Override
-                    public ListCell<OrderDetails> call(ListView<OrderDetails> p) {
+                    protected void updateItem(OrderDetails item, boolean empty) {
+                        super.updateItem(item, empty);
 
-                        ListCell<OrderDetails> cell = new ListCell<OrderDetails>(){
-
-                            @Override
-                            protected void updateItem(OrderDetails t, boolean bln) {
-                                super.updateItem(t, bln);
-                                if (t != null) {
-                                    setText(t.getQuantityOrdered() + ":" + t.getOrderLineNumber());
-                                }
-                            }
-
-                        };
-
-                        return cell;
+                        if (empty || item == null) {
+                            setText(null);
+                        } else {
+                            setText(item.toString());
+                        }
                     }
                 });
-
 
             } catch (ClassNotFoundException e) {
                 e.printStackTrace();
@@ -154,6 +164,7 @@ public class BaseController {
 
         });
     }
+    
 
     private void populateOrders() {
 
@@ -172,7 +183,6 @@ public class BaseController {
             tcRequiredDate.setCellValueFactory(cell -> new SimpleObjectProperty<Date>(cell.getValue().getRequiredDate()));
             tcShippedDate.setCellValueFactory(cell -> new SimpleObjectProperty<Date>(cell.getValue().getShippedDate()));
             tcStatus.setCellValueFactory(cell -> new SimpleObjectProperty<String>(cell.getValue().getStatus()));
-            tcComments.setCellValueFactory(cell -> new SimpleObjectProperty<String>(cell.getValue().getComments()));
             tcCustomerNumber.setCellValueFactory(cell -> new SimpleObjectProperty<Integer>(cell.getValue().getCustomerNumber()));
 
         } catch (ClassNotFoundException e) {

@@ -61,4 +61,17 @@ public class OrderDetails {
     public void setOrderLineNumber(Short orderLineNumber) {
         this.orderLineNumber = orderLineNumber;
     }
+
+
+    // Display
+
+    @Override
+    public String toString() {
+        return
+                " Product Code='" + productCode + System.lineSeparator() +
+                " Quantity Ordered=" + quantityOrdered + System.lineSeparator() +
+                " Price Each=" + priceEach + System.lineSeparator() +
+                " Order Line Number=" + orderLineNumber + System.lineSeparator()
+                ;
+    }
 }

@@ -6,11 +6,11 @@
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
-<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.SeparatorMenuItem?>
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TreeView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
@@ -67,36 +67,28 @@
                   <TreeView fx:id="selectionTreeView" layoutX="-23.0" layoutY="159.0" prefHeight="602.0" prefWidth="153.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                     </children>
                 </AnchorPane>
-                <ScrollPane prefHeight="-1.0" prefWidth="-1.0">
-                    <content>
-                        <AnchorPane id="Content" fx:id="apData" minHeight="-1.0" minWidth="-1.0" prefHeight="602.0" prefWidth="717.0">
-                     <children>
-                        <TableView fx:id="tvOrders" prefHeight="602.0" prefWidth="717.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                          <columns>
-                            <TableColumn fx:id="tcOrderNumber" prefWidth="75.0" text="Order Number" />
-                            <TableColumn fx:id="tcOrderDate" prefWidth="75.0" text="Order Date" />
-                              <TableColumn fx:id="tcRequiredDate" prefWidth="75.0" text="Required Date" />
-                              <TableColumn fx:id="tcShippedDate" prefWidth="75.0" text="Shipped Date" />
-                              <TableColumn fx:id="tcStatus" prefWidth="75.0" text="Status" />
-                              <TableColumn fx:id="tcComments" prefWidth="75.0" text="Comments" />
-                              <TableColumn fx:id="tcCustomerNumber" prefWidth="75.0" text="Customer Number" />
-                          </columns>
-                        </TableView>
-                     </children></AnchorPane>
-                    </content>
-                </ScrollPane>
+            <TableView fx:id="tvOrders" prefHeight="602.0" prefWidth="717.0">
+              <columns>
+                <TableColumn fx:id="tcOrderNumber" prefWidth="125.0" text="Order Number" />
+                <TableColumn fx:id="tcOrderDate" prefWidth="94.0" text="Order Date" />
+                  <TableColumn fx:id="tcRequiredDate" prefWidth="126.0" text="Required Date" />
+                  <TableColumn fx:id="tcShippedDate" prefWidth="128.0" text="Shipped Date" />
+                  <TableColumn fx:id="tcStatus" prefWidth="90.0" text="Status" />
+                  <TableColumn fx:id="tcCustomerNumber" prefWidth="146.0" text="Customer Number" />
+              </columns>
+            </TableView>
                 <AnchorPane fx:id="apDetails">
                <children>
-                  <SplitPane dividerPositions="0.5416666666666666" layoutX="20.0" layoutY="157.0" orientation="VERTICAL" prefHeight="602.0" prefWidth="199.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                    <items>
-                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
-                           <children>
-                              <ListView fx:id="lvDetails" layoutX="-1.0" layoutY="61.0" prefHeight="321.0" prefWidth="197.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                           </children>
-                        </AnchorPane>
-                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0" />
-                    </items>
-                  </SplitPane>
+                  <VBox prefHeight="271.0" prefWidth="197.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                     <children>
+                        <Label text="Order Details" />
+                        <ListView fx:id="lvDetails" prefHeight="266.0" prefWidth="199.0" />
+                        <Label text="Order Summary" />
+                        <TextArea fx:id="taOrderSummary" editable="false" prefHeight="84.0" prefWidth="199.0" />
+                        <Label prefHeight="57.0" prefWidth="197.0" text="Comments" />
+                        <TextArea fx:id="taComments" editable="false" prefHeight="168.0" prefWidth="197.0" />
+                     </children>
+                  </VBox>
                </children>
                 </AnchorPane>
             </items>
