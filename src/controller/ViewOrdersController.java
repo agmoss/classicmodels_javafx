@@ -1,4 +1,4 @@
-package view;
+package controller;
 
 import accessdata.OrderDetailsDao;
 import accessdata.OrdersDao;
@@ -7,28 +7,22 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.Node;
 import javafx.scene.control.*;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
-import javafx.scene.text.Text;
 import models.Order;
 import models.OrderDetails;
 
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.net.URL;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.ResourceBundle;
 import java.util.function.Function;
 
-public class OrderController {
+public class ViewOrdersController {
 
 
     @FXML
@@ -86,10 +80,9 @@ public class OrderController {
     }
 
 
-    private void displayOrderDetails(){
+    private void displayOrderDetails() {
 
         try {
-
             // Get the order details
             Order selectedOrder = tvOrders.getSelectionModel().getSelectedItem();
             Connection conn = connection.Connect.getConnection();
@@ -97,15 +90,19 @@ public class OrderController {
             List<OrderDetails> odList = detailsAccessor.getItems(selectedOrder.getOrderNumber());
             List<OrderDetails> arOdList = new ArrayList<>(odList);
 
-            ObservableList<OrderDetails> displayList =  FXCollections.observableArrayList(odList);
+            ObservableList<OrderDetails> displayList = FXCollections.observableArrayList(odList);
 
             //populate
             Function<OrderDetails, BigDecimal> totalMapper = a -> a.getPriceEach().multiply(BigDecimal.valueOf(a.getQuantityOrdered()));
             BigDecimal result = arOdList.stream()
                     .map(totalMapper).reduce(BigDecimal.ZERO, BigDecimal::add);
 
+            NumberFormat formatter = NumberFormat.getCurrencyInstance();
+            String moneyString = formatter.format(result);
+            //System.out.println(moneyString);
+
             // Display the order total
-            taOrderSummary.setText("Order Total: " +result.toString());
+            taOrderSummary.setText("Order Total: " + moneyString);
 
             // Display the order comments
             taComments.setText(selectedOrder.getComments());
@@ -133,6 +130,7 @@ public class OrderController {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
     }
 
 
@@ -162,6 +160,5 @@ public class OrderController {
         }
 
     }
-
 
 }
