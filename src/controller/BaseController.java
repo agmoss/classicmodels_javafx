@@ -1,4 +1,4 @@
-package view;
+package controller;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -63,10 +63,10 @@ public class BaseController {
 
         //order options
         TreeItem<String> itemAdd = new TreeItem<>("Add");
-        itemOrders.setExpanded(false);
+        itemOrders.setExpanded(true);
         //create child
         TreeItem<String> itemView = new TreeItem<>("View");
-        itemOrders.setExpanded(false);
+        itemOrders.setExpanded(true);
 
         //root is the parent of itemChild
         root.getChildren().add(itemOrders);
@@ -86,7 +86,6 @@ public class BaseController {
         if (node instanceof Text || (node instanceof TreeCell && ((TreeCell) node).getText() != null)) {
             String name = (String) ((TreeItem)selectionTreeView.getSelectionModel().getSelectedItem()).getValue();
 
-            // TODO: Load the data table for the selected item (break this file up)
             switch (name){
                 case "View":
 
@@ -95,7 +94,7 @@ public class BaseController {
 
                 case "Add":
 
-                    bpContent.setCenter(null);
+                    loadContent("add_orders");
                     break;
 
                 default:
@@ -106,12 +105,12 @@ public class BaseController {
         }
     }
 
-    private void loadContent(String ui){
+    private void loadContent(String fxml_file){
 
         Parent root = null;
 
         try {
-           root =  FXMLLoader.load(getClass().getResource(ui+".fxml"));
+           root =  FXMLLoader.load(getClass().getResource("/view/"+fxml_file+".fxml"));
         } catch (IOException e) {
             e.printStackTrace();
         }

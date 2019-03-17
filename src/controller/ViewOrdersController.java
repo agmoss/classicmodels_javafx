@@ -1,4 +1,4 @@
-package view;
+package controller;
 
 import accessdata.OrderDetailsDao;
 import accessdata.OrdersDao;
@@ -16,12 +16,13 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.function.Function;
 
-public class OrderController {
+public class ViewOrdersController {
 
 
     @FXML
@@ -96,8 +97,12 @@ public class OrderController {
             BigDecimal result = arOdList.stream()
                     .map(totalMapper).reduce(BigDecimal.ZERO, BigDecimal::add);
 
+            NumberFormat formatter = NumberFormat.getCurrencyInstance();
+            String moneyString = formatter.format(result);
+            //System.out.println(moneyString);
+
             // Display the order total
-            taOrderSummary.setText("Order Total: " + result.toString());
+            taOrderSummary.setText("Order Total: " + moneyString);
 
             // Display the order comments
             taComments.setText(selectedOrder.getComments());
@@ -125,6 +130,7 @@ public class OrderController {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
     }
 
 
