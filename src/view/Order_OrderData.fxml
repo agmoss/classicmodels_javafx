@@ -1,19 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.AnchorPane?>
 
 <AnchorPane xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.OrderController">
     <children>
-        <SplitPane dividerPositions="0.5161787365177196" prefHeight="588.0" prefWidth="858.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+        <SplitPane dividerPositions="0.6308411214953271" prefHeight="588.0" prefWidth="858.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
             <items>
-
-
-
-
                 <TableView fx:id="tvOrders" prefHeight="586.0" prefWidth="479.0">
                     <columns>
                         <TableColumn fx:id="tcOrderNumber" prefWidth="125.0" text="Order Number" />
@@ -29,11 +27,11 @@
                 </TableView>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="586.0" prefWidth="357.0">
                     <children>
-                        <ListView fx:id="lvDetails" prefHeight="242.0" prefWidth="256.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
-                        <Label text="Order Details" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
-                        <TextArea fx:id="taOrderSummary" editable="false" prefHeight="84.0" prefWidth="205.0" wrapText="true" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
-                        <Label text="Order Summary" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
-                        <Label prefHeight="57.0" prefWidth="180.0" text="Comments" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+                        <ListView fx:id="lvDetails" layoutY="51.0" prefHeight="308.0" prefWidth="312.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+                        <Label layoutY="14.0" text="Order Details" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+                        <TextArea fx:id="taOrderSummary" editable="false" layoutY="393.0" prefHeight="84.0" prefWidth="205.0" wrapText="true" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+                        <Label layoutY="365.0" text="Order Summary" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+                        <Label layoutY="477.0" prefHeight="57.0" prefWidth="180.0" text="Comments" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
                         <TextArea fx:id="taComments" editable="false" prefHeight="57.0" prefWidth="228.0" wrapText="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
                     </children>
                 </AnchorPane>
@@ -41,5 +39,3 @@
         </SplitPane>
     </children>
 </AnchorPane>
-
-

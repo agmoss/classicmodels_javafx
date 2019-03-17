@@ -1,37 +1,23 @@
 package view;
 
-import accessdata.OrderDetailsDao;
-import accessdata.OrdersDao;
-import javafx.beans.property.ReadOnlyIntegerWrapper;
-import javafx.beans.property.SimpleObjectProperty;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
-import javafx.scene.control.*;
+import javafx.scene.Parent;
+import javafx.scene.control.TreeCell;
+import javafx.scene.control.TreeItem;
+import javafx.scene.control.TreeView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
-import models.Order;
-import models.OrderDetails;
 
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.net.URL;
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 import java.util.ResourceBundle;
-import java.util.function.Function;
 
 public class BaseController {
-
-    @FXML
-    public OrderController orderController;
 
     @FXML
     TreeView selectionTreeView;
@@ -47,6 +33,8 @@ public class BaseController {
     private Font x3;
     @FXML
     private Color x4;
+    @FXML
+    private BorderPane bpContent;
 
 
     @FXML
@@ -60,7 +48,6 @@ public class BaseController {
         createTree(); // Side Navigation
 
     }
-
 
     // Side Navigation
     public void createTree(String... rootItems) {
@@ -101,19 +88,36 @@ public class BaseController {
 
             // TODO: Load the data table for the selected item (break this file up)
             switch (name){
-                case "Orders":
+                case "View":
 
+                    loadContent("Order_OrderData");
+                    break;
+
+                case "Add":
+
+                    bpContent.setCenter(null);
                     break;
 
                 default:
 
-                    //apData.getChildren().setAll(new AnchorPane());
                     break;
 
             }
-
         }
     }
 
+    private void loadContent(String ui){
+
+        Parent root = null;
+
+        try {
+           root =  FXMLLoader.load(getClass().getResource(ui+".fxml"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        bpContent.setCenter(root);
+
+    }
 
 }
