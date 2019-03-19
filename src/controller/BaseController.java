@@ -4,9 +4,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
-import javafx.scene.control.TreeCell;
-import javafx.scene.control.TreeItem;
-import javafx.scene.control.TreeView;
+import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
@@ -35,7 +33,10 @@ public class BaseController {
     private Color x4;
     @FXML
     private BorderPane bpContent;
-
+    @FXML
+    private Label sessionLabel;
+    @FXML
+    private MenuItem miLogout;
 
     @FXML
     void initialize() throws IOException {
@@ -44,10 +45,19 @@ public class BaseController {
         assert x3 != null : "fx:id=\"x3\" was not injected: check your FXML file 'view.fxml'.";
         assert x4 != null : "fx:id=\"x4\" was not injected: check your FXML file 'view.fxml'.";
         assert selectionTreeView != null : "fx:id=\"selectionTreeView\" was not injected: check your FXML file 'base.fxml'.";
+        assert miLogout != null : "fx:id=\"miLogout\" was not injected: check your FXML file 'base.fxml'.";
 
         createTree(); // Side Navigation
 
     }
+
+
+    // For login
+    public void initSessionID(final LoginManager loginManager, String sessionID) {
+        sessionLabel.setText(sessionID);
+        miLogout.setOnAction(event -> loginManager.logout());
+    }
+
 
     // Side Navigation
     public void createTree(String... rootItems) {
@@ -75,7 +85,7 @@ public class BaseController {
         selectionTreeView.setRoot(root);
 
         // Add the onclick event handler
-        selectionTreeView.addEventHandler(MouseEvent.MOUSE_CLICKED,this::handleMouseClicked);
+        selectionTreeView.addEventHandler(MouseEvent.MOUSE_CLICKED, this::handleMouseClicked);
     }
 
 
@@ -84,9 +94,9 @@ public class BaseController {
         Node node = event.getPickResult().getIntersectedNode();
         // Accept clicks only on node cells, and not on empty spaces of the TreeView
         if (node instanceof Text || (node instanceof TreeCell && ((TreeCell) node).getText() != null)) {
-            String name = (String) ((TreeItem)selectionTreeView.getSelectionModel().getSelectedItem()).getValue();
+            String name = (String) ((TreeItem) selectionTreeView.getSelectionModel().getSelectedItem()).getValue();
 
-            switch (name){
+            switch (name) {
                 case "View":
 
                     loadContent("Order_OrderData");
@@ -105,12 +115,12 @@ public class BaseController {
         }
     }
 
-    private void loadContent(String fxml_file){
+    private void loadContent(String fxml_file) {
 
         Parent root = null;
 
         try {
-           root =  FXMLLoader.load(getClass().getResource("/view/"+fxml_file+".fxml"));
+            root = FXMLLoader.load(getClass().getResource("/view/" + fxml_file + ".fxml"));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -118,5 +128,4 @@ public class BaseController {
         bpContent.setCenter(root);
 
     }
-
 }

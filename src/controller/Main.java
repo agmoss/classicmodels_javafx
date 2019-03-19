@@ -1,24 +1,20 @@
 package controller;
 
 import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
+
 public class Main extends Application {
+    public static void main(String[] args) { launch(args); }
+    @Override public void start(Stage stage) {
+        Scene scene = new Scene(new AnchorPane(),1200, 800);
 
-    public static void main(String[] args) {
-        launch(args);
-    }
+        LoginManager loginManager = new LoginManager(scene);
+        loginManager.displayLoginScreen();
 
-    @Override
-    public void start(Stage primaryStage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("/view/base.fxml"));
-        primaryStage.setTitle("Classic Models");
-
-        Scene scene = new Scene(root, 1200, 800);
-        primaryStage.setScene(scene);
-        primaryStage.show();
+        stage.setScene(scene);
+        stage.show();
     }
 }
