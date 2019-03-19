@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+
+<BorderPane prefHeight="800" prefWidth="1200" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.LoginController">
+   <top>
+    <AnchorPane prefHeight="424.0" prefWidth="1200.0" BorderPane.alignment="CENTER">
+       <children>
+            <GridPane layoutX="383.0" layoutY="117.0" prefHeight="105.0" prefWidth="451.0">
+                <children>
+                    <Label prefHeight="16.0" prefWidth="87.0" text="Username:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                    <Label text="Password:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                    <TextField fx:id="user" promptText="Use &quot;open&quot; to login" text="Randy" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                    <TextField fx:id="password" promptText="Use &quot;sesame&quot; to login" text="Jackson" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                </children>
+                <columnConstraints>
+                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="345.0" minWidth="10.0" prefWidth="126.0" />
+                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="358.0" minWidth="10.0" prefWidth="121.0" />
+                </columnConstraints>
+                <rowConstraints>
+                    <RowConstraints maxHeight="178.0" minHeight="10.0" prefHeight="178.0" vgrow="SOMETIMES" />
+                    <RowConstraints maxHeight="227.0" minHeight="10.0" prefHeight="176.0" vgrow="SOMETIMES" />
+                </rowConstraints>
+            </GridPane>
+       </children>
+    </AnchorPane>
+   </top>
+   <center>
+      <AnchorPane prefHeight="440.0" prefWidth="1200.0" BorderPane.alignment="CENTER">
+         <children>
+                  <Button fx:id="loginButton" alignment="CENTER" defaultButton="true" layoutX="562.0" layoutY="-9.0" mnemonicParsing="false" prefHeight="47.0" prefWidth="76.0" text="Login" />
+         </children>
+      </AnchorPane>
+   </center>
+</BorderPane>
