@@ -1,15 +1,13 @@
 package accessdata;
 
-import models.Order;
 import models.OrderDetails;
 
-import java.math.BigDecimal;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class OrderDetailsDao implements Dao {
+public class OrderDetailsDao implements Dao<OrderDetails> {
 
     // Members
     private Connection conn;
@@ -57,18 +55,48 @@ public class OrderDetailsDao implements Dao {
         return null;
     }
 
+
+
+    // THis signature is all messed up
     @Override
-    public void save(Object o) {
+    public void insert(OrderDetails orderdetails) throws SQLException {
+
+        try{
+            // the mysql insert statement
+            String query = " insert into orderdetails (orderNumber, productCode, quantityOrdered, priceEach, orderLineNumber)"
+                    + " values (?, ?, ?, ?, ?)";
+
+            // create the mysql insert prepared statement
+            PreparedStatement preparedStmt = conn.prepareStatement(query);
+
+            preparedStmt.setInt (1, orderdetails.getOrderNumber());
+            preparedStmt.setString (2, orderdetails.getProductCode());
+            preparedStmt.setInt  (3, orderdetails.getQuantityOrdered());
+            preparedStmt.setBigDecimal(4, orderdetails.getPriceEach());
+            preparedStmt.setShort(5,orderdetails.getOrderLineNumber());
+
+            // execute the prepared statement
+            preparedStmt.execute();
+
+            conn.close();
+
+
+        } catch (SQLException e) {
+            System.err.println("Got an exception inserting an order");
+            System.err.println(e.getMessage());
+            e.printStackTrace();
+            throw e;
+        }
 
     }
 
     @Override
-    public void update(Object o, String[] params) {
+    public void update(OrderDetails o, String[] params) {
 
     }
 
     @Override
-    public void delete(Object o) {
+    public void delete(OrderDetails o) {
 
     }
 }

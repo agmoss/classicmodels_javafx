@@ -2,10 +2,7 @@ package accessdata;
 
 import models.Order;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -57,7 +54,36 @@ public class OrdersDao implements Dao<Order> {
     }
 
     @Override
-    public void save(Order order) {
+    public void insert(Order order) throws SQLException {
+
+        try{
+            // the mysql insert statement
+            String query = " insert into orders (orderNumber, orderDate, requiredDate, shippedDate, status,comments,customerNumber)"
+                    + " values (?, ?, ?, ?, ?,?,?)";
+
+            // create the mysql insert prepared statement
+            PreparedStatement preparedStmt = conn.prepareStatement(query);
+
+            preparedStmt.setInt (1, order.getOrderNumber());
+            preparedStmt.setDate (2, (Date) order.getOrderDate()); // TODO: Change date type for these
+            preparedStmt.setDate   (3, (Date) order.getRequiredDate());
+            preparedStmt.setDate(4, (Date) order.getShippedDate());
+            preparedStmt.setString(5,order.getStatus());
+            preparedStmt.setString(6,order.getComments());
+            preparedStmt.setInt    (7, order.getCustomerNumber());
+
+            // execute the prepared statement
+            preparedStmt.execute();
+
+            conn.close();
+
+
+        } catch (SQLException e) {
+            System.err.println("Got an exception inserting an order");
+            System.err.println(e.getMessage());
+            e.printStackTrace();
+            throw e;
+        }
 
     }
 
