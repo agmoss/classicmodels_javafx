@@ -104,7 +104,7 @@ public class BaseController {
 
                 case "Add":
 
-                    loadContent("add_orders");
+                    loadContent("add_order");
                     break;
 
                 default:
