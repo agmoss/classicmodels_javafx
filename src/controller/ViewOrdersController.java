@@ -6,7 +6,11 @@ import javafx.beans.property.ReadOnlyIntegerWrapper;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import models.Order;
@@ -20,6 +24,7 @@ import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.function.Consumer;
 import java.util.function.Function;
 
 public class ViewOrdersController {
@@ -61,7 +66,18 @@ public class ViewOrdersController {
     private TextArea taOrderSummary;
 
     @FXML
+    private ContextMenu cmOrder;
+
+    @FXML
+    private MenuItem miUpdate;
+
+    @FXML
+    private MenuItem miDelete;
+
+    @FXML
     void initialize() throws IOException {
+
+
         assert apData != null : "fx:id=\"apData\" was not injected: check your FXML file 'base.fxml'.";
         assert apDetails != null : "fx:id=\"apDetails\" was not injected: check your FXML file 'base.fxml'.";
         assert lvDetails != null : "fx:id=\"lvDetails\" was not injected: check your FXML file 'base.fxml'.";
@@ -72,8 +88,14 @@ public class ViewOrdersController {
         assert tcStatus != null : "fx:id=\"tcStatus\" was not injected: check your FXML file 'OrdersTableController.fxml'.";
         assert tcCustomerNumber != null : "fx:id=\"tcCustomerNumber\" was not injected: check your FXML file 'OrdersTableController.fxml'.";
         assert taOrderSummary != null : "fx:id=\"taOrderSummary\" was not injected: check your FXML file 'base.fxml'.";
+        assert cmOrder != null : "fx:id=\"cmOrder\" was not injected: check your FXML file 'view_orders.fxml'.";
+        assert miUpdate != null : "fx:id=\"miUpdate\" was not injected: check your FXML file 'view_orders.fxml'.";
+        assert miDelete != null : "fx:id=\"miDelete\" was not injected: check your FXML file 'view_orders.fxml'.";
+
 
         populateOrders(); // Table view
+
+        initalizeContextMenu();
 
         // Display the order details in the right hand side list view
         tvOrders.getSelectionModel().selectedItemProperty().addListener((observable) -> displayOrderDetails());
@@ -160,5 +182,23 @@ public class ViewOrdersController {
         }
 
     }
+
+
+
+    public void initalizeContextMenu(){
+        miUpdate.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                Order selectedOrder = tvOrders.getSelectionModel().getSelectedItem();
+
+                // Placeholder
+                System.out.println(selectedOrder.toString());
+
+            }
+        });
+
+
+    }
+
 
 }

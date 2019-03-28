@@ -81,4 +81,17 @@ public class Order {
     public void setCustomerNumber(int customerNumber) {
         this.customerNumber = customerNumber;
     }
+
+
+    @Override
+    public String toString() {
+        return
+                "Order Number=" + orderNumber + System.lineSeparator() +
+                " Order Date=" + orderDate + System.lineSeparator() +
+                " Required Date=" + requiredDate + System.lineSeparator() +
+                " Shipped Date=" + shippedDate + System.lineSeparator() +
+                " Status=" + status + System.lineSeparator() +
+                " Cust# =" + customerNumber
+                ;
+    }
 }

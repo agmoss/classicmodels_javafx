@@ -2,6 +2,7 @@ package controller;
 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import models.Order;
 
 import java.io.IOException;
 
@@ -46,6 +47,7 @@ public class LoginManager {
             scene.setRoot(loader.load());
 
             BaseController controller = loader.getController();
+
             controller.initSessionID(this, sessionID); // Pass into to the main application (Base Controller)
 
         } catch (IOException e) {

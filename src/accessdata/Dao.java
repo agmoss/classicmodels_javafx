@@ -14,8 +14,8 @@ public interface Dao<T> {
 
     void insert(T t) throws SQLException;
 
-    void update(T t, String[] params);
+    void update(T t, String[] params) throws SQLException;
 
-    void delete(T t);
+    void delete(T t) throws SQLException;
 
 }

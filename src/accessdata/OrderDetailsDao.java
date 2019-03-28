@@ -62,6 +62,8 @@ public class OrderDetailsDao implements Dao<OrderDetails> {
     public void insert(OrderDetails orderdetails) throws SQLException {
 
         try{
+            int nRowsInserted = 0;
+
             // the mysql insert statement
             String query = " insert into orderdetails (orderNumber, productCode, quantityOrdered, priceEach, orderLineNumber)"
                     + " values (?, ?, ?, ?, ?)";
@@ -76,7 +78,9 @@ public class OrderDetailsDao implements Dao<OrderDetails> {
             preparedStmt.setShort(5,orderdetails.getOrderLineNumber());
 
             // execute the prepared statement
-            preparedStmt.execute();
+
+            nRowsInserted += preparedStmt.executeUpdate();
+            System.out.println(String.format("Updated %d row(s) of data.", nRowsInserted));
 
             conn.close();
 
@@ -91,12 +95,64 @@ public class OrderDetailsDao implements Dao<OrderDetails> {
     }
 
     @Override
-    public void update(OrderDetails o, String[] params) {
+    public void update(OrderDetails o, String[] params) throws SQLException {
+
+        try{
+            int nRowsUpdated = 0;
+
+            // the mysql insert statement
+            String query = " UPDATE orderdetails SET productCode=?, quantityOrdered = ?, priceEach=?, orderLineNumber=? WHERE orderNumber = ?";
+
+            // create the mysql insert prepared statement
+            PreparedStatement preparedStmt = conn.prepareStatement(query);
+
+            preparedStmt.setInt (5, o.getOrderNumber());
+            preparedStmt.setString (1, o.getProductCode());
+            preparedStmt.setInt  (2, o.getQuantityOrdered());
+            preparedStmt.setBigDecimal(3, o.getPriceEach());
+            preparedStmt.setShort(4,o.getOrderLineNumber());
+
+            nRowsUpdated += preparedStmt.executeUpdate();
+            System.out.println(String.format("Updated %d row(s) of data.", nRowsUpdated));
+
+            conn.close();
+
+
+        } catch (SQLException e) {
+            System.err.println("Got an exception inserting an order");
+            System.err.println(e.getMessage());
+            e.printStackTrace();
+            throw e;
+        }
 
     }
 
     @Override
-    public void delete(OrderDetails o) {
+    public void delete(OrderDetails o) throws SQLException {
+
+        try{
+            int nRowsDeleted = 0;
+
+            // the mysql insert statement
+            String query = "DELETE FROM orderdetails WHERE orderNumber = ?";
+
+            // create the mysql insert prepared statement
+            PreparedStatement preparedStmt = conn.prepareStatement(query);
+
+            preparedStmt.setInt (1, o.getOrderNumber());
+
+            nRowsDeleted += preparedStmt.executeUpdate();
+            System.out.println(String.format("Deleted %d row(s) of data.", nRowsDeleted));
+
+            conn.close();
+
+
+        } catch (SQLException e) {
+            System.err.println("Got an exception inserting an order");
+            System.err.println(e.getMessage());
+            e.printStackTrace();
+            throw e;
+        }
 
     }
 }

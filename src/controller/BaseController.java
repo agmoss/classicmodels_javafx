@@ -38,8 +38,9 @@ public class BaseController {
     @FXML
     private MenuItem miLogout;
 
+
     @FXML
-    void initialize() throws IOException {
+    public void initialize() throws IOException {
         assert x1 != null : "fx:id=\"x1\" was not injected: check your FXML file 'view.fxml'.";
         assert x2 != null : "fx:id=\"x2\" was not injected: check your FXML file 'view.fxml'.";
         assert x3 != null : "fx:id=\"x3\" was not injected: check your FXML file 'view.fxml'.";
@@ -74,14 +75,18 @@ public class BaseController {
         //order options
         TreeItem<String> itemAdd = new TreeItem<>("Add");
         itemOrders.setExpanded(true);
-        //create child
+
         TreeItem<String> itemView = new TreeItem<>("View");
+        itemOrders.setExpanded(true);
+
+        TreeItem<String> itemUpdate = new TreeItem<>("Update");
         itemOrders.setExpanded(true);
 
         //root is the parent of itemChild
         root.getChildren().add(itemOrders);
         itemOrders.getChildren().add(itemAdd);
         itemOrders.getChildren().add(itemView);
+        itemOrders.getChildren().add(itemUpdate);
         selectionTreeView.setRoot(root);
 
         // Add the onclick event handler
@@ -98,24 +103,25 @@ public class BaseController {
 
             switch (name) {
                 case "View":
-
-                    loadContent("Order_OrderData");
+                    loadContent("view_orders");
                     break;
 
                 case "Add":
-
                     loadContent("add_order");
                     break;
 
-                default:
+                case "Update":
+                    loadContent("update_order");
+                    break;
 
+                default:
                     break;
 
             }
         }
     }
 
-    private void loadContent(String fxml_file) {
+    protected void loadContent(String fxml_file) {
 
         Parent root = null;
 
