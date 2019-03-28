@@ -10,9 +10,8 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.control.*;
-import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.BorderPane;
 import models.Order;
 import models.OrderDetails;
 
@@ -24,18 +23,14 @@ import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.function.Consumer;
 import java.util.function.Function;
 
 public class ViewOrdersController {
 
+    private BorderPane bp;
 
     @FXML
     private ListView<OrderDetails> lvDetails;
-    @FXML
-    private AnchorPane apData;
-    @FXML
-    private AnchorPane apDetails;
 
     // Orders Table
     @FXML
@@ -75,23 +70,25 @@ public class ViewOrdersController {
     private MenuItem miDelete;
 
     @FXML
+    private BorderPane bpOrders;
+
+    @FXML
     void initialize() throws IOException {
 
-
-        assert apData != null : "fx:id=\"apData\" was not injected: check your FXML file 'base.fxml'.";
-        assert apDetails != null : "fx:id=\"apDetails\" was not injected: check your FXML file 'base.fxml'.";
-        assert lvDetails != null : "fx:id=\"lvDetails\" was not injected: check your FXML file 'base.fxml'.";
-        assert tcOrderNumber != null : "fx:id=\"tcOrderNumber\" was not injected: check your FXML file 'OrdersTableController.fxml'.";
-        assert tcOrderDate != null : "fx:id=\"tcOrderDate\" was not injected: check your FXML file 'OrdersTableController.fxml'.";
-        assert tcRequiredDate != null : "fx:id=\"tcRequiredDate\" was not injected: check your FXML file 'OrdersTableController.fxml'.";
-        assert tcShippedDate != null : "fx:id=\"tcShippedDate\" was not injected: check your FXML file 'OrdersTableController.fxml'.";
-        assert tcStatus != null : "fx:id=\"tcStatus\" was not injected: check your FXML file 'OrdersTableController.fxml'.";
-        assert tcCustomerNumber != null : "fx:id=\"tcCustomerNumber\" was not injected: check your FXML file 'OrdersTableController.fxml'.";
-        assert taOrderSummary != null : "fx:id=\"taOrderSummary\" was not injected: check your FXML file 'base.fxml'.";
+        assert bpOrders != null : "fx:id=\"bpOrders\" was not injected: check your FXML file 'view_orders.fxml'.";
+        assert tvOrders != null : "fx:id=\"tvOrders\" was not injected: check your FXML file 'view_orders.fxml'.";
+        assert tcOrderNumber != null : "fx:id=\"tcOrderNumber\" was not injected: check your FXML file 'view_orders.fxml'.";
+        assert tcOrderDate != null : "fx:id=\"tcOrderDate\" was not injected: check your FXML file 'view_orders.fxml'.";
+        assert tcRequiredDate != null : "fx:id=\"tcRequiredDate\" was not injected: check your FXML file 'view_orders.fxml'.";
+        assert tcShippedDate != null : "fx:id=\"tcShippedDate\" was not injected: check your FXML file 'view_orders.fxml'.";
+        assert tcStatus != null : "fx:id=\"tcStatus\" was not injected: check your FXML file 'view_orders.fxml'.";
+        assert tcCustomerNumber != null : "fx:id=\"tcCustomerNumber\" was not injected: check your FXML file 'view_orders.fxml'.";
         assert cmOrder != null : "fx:id=\"cmOrder\" was not injected: check your FXML file 'view_orders.fxml'.";
         assert miUpdate != null : "fx:id=\"miUpdate\" was not injected: check your FXML file 'view_orders.fxml'.";
         assert miDelete != null : "fx:id=\"miDelete\" was not injected: check your FXML file 'view_orders.fxml'.";
-
+        assert lvDetails != null : "fx:id=\"lvDetails\" was not injected: check your FXML file 'view_orders.fxml'.";
+        assert taOrderSummary != null : "fx:id=\"taOrderSummary\" was not injected: check your FXML file 'view_orders.fxml'.";
+        assert taComments != null : "fx:id=\"taComments\" was not injected: check your FXML file 'view_orders.fxml'.";
 
         populateOrders(); // Table view
 
@@ -99,6 +96,14 @@ public class ViewOrdersController {
 
         // Display the order details in the right hand side list view
         tvOrders.getSelectionModel().selectedItemProperty().addListener((observable) -> displayOrderDetails());
+
+        miUpdate.setOnAction(event -> loadUpdate(tvOrders.getSelectionModel().getSelectedItem()));
+
+    }
+
+    // For going back to the order details view on the right
+    public void initView(final BorderPane bp) {
+        this.bp = bp;
     }
 
 
@@ -180,12 +185,10 @@ public class ViewOrdersController {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
     }
 
 
-
-    public void initalizeContextMenu(){
+    public void initalizeContextMenu() {
         miUpdate.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
@@ -196,9 +199,24 @@ public class ViewOrdersController {
 
             }
         });
-
-
     }
 
+
+    protected void loadUpdate(Order or) {
+
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/update_order.fxml"));
+
+        try {
+            bpOrders.setRight(loader.load());
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+
+        UpdateOrderController uoC = loader.getController();
+
+        // Pass the main content borderpane to the child for re-population
+        uoC.initUpdate(or, this.bp);
+
+    }
 
 }

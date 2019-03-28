@@ -5,10 +5,13 @@ import accessdata.OrdersDao;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
+import javafx.scene.layout.BorderPane;
 import models.Order;
 import models.OrderDetails;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -17,53 +20,39 @@ import java.util.List;
 
 public class UpdateOrderController {
 
+    private BorderPane bp;
     @FXML
     private TextField tfOrderNumber;
-
     @FXML
     private TextField tfStatus;
-
     @FXML
     private TextField tfComments;
-
     @FXML
     private TextField tfCustomerNumber;
-
     @FXML
     private DatePicker dpOrderDate;
-
     @FXML
     private DatePicker dpRequiredDate;
-
     @FXML
     private DatePicker dpShippedDate;
-
     @FXML
     private TextField tfProductCode;
-
     @FXML
     private TextField tfQuantityOrdered;
-
     @FXML
     private TextField tfPriceEach;
-
     @FXML
     private TextField tfOrderLineNumber;
-
     @FXML
     private Button btnAddDetail;
-
     @FXML
     private ListView<OrderDetails> lvDetails;
-
-    @FXML
-    private ListView<Order> lvOrders;
-
     @FXML
     private Button btnUpdate;
-
     @FXML
     private Button btnRemoveDetail;
+    @FXML
+    private Button btnBack;
 
     @FXML
     void initialize() {
@@ -81,11 +70,9 @@ public class UpdateOrderController {
         assert btnAddDetail != null : "fx:id=\"btnAddDetail\" was not injected: check your FXML file 'add_order.fxml'.";
         assert lvDetails != null : "fx:id=\"lvDetails\" was not injected: check your FXML file 'add_order.fxml'.";
         assert btnUpdate != null : "fx:id=\"btnInsert\" was not injected: check your FXML file 'add_order.fxml'.";
-        assert lvOrders != null : "fx:id=\"lvOrders\" was not injected: check your FXML file 'update_order.fxml'.";
         assert btnRemoveDetail != null : "fx:id=\"btnRemoveDetail\" was not injected: check your FXML file 'update_order.fxml'.";
+        assert btnBack != null : "fx:id=\"btnBack\" was not injected: check your FXML file 'update_order.fxml'.";
 
-
-        populateOrders();
 
         btnAddDetail.setOnAction(actionEvent -> {
 
@@ -100,14 +87,29 @@ public class UpdateOrderController {
             lvDetails.getItems().remove(lvDetails.getSelectionModel().getSelectedItem());
         });
 
-        // Display the order details in the right hand side list view
-        lvOrders.getSelectionModel().selectedItemProperty().addListener((observable) -> populateOrder());
+        btnBack.setOnAction(actionEvent ->
+        {
 
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/view_orders.fxml"));
+
+            try {
+
+                this.bp.setCenter(loader.load());
+                ViewOrdersController voC = loader.getController();
+
+                voC.initView(this.bp); // Pass object BACK to the login controller
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
     }
 
-    private void populateOrder() {
 
-        Order selectedOrder = lvOrders.getSelectionModel().getSelectedItem();
+    public void initUpdate(Order selectedOrder, BorderPane bp) {
+
+        // Border pane from the parent
+        this.bp = bp;
 
         tfOrderNumber.setText(selectedOrder.getOrderNumber()+"");
         tfComments.setText(selectedOrder.getComments());
@@ -127,6 +129,7 @@ public class UpdateOrderController {
 
     }
 
+
     private void addOrderDetail(){
 
         try{
@@ -143,9 +146,7 @@ public class UpdateOrderController {
         }catch (Exception e){
             e.printStackTrace();
         }
-
     }
-
 
     private void displayOrderDetails(Order selectedOrder) {
 
@@ -184,49 +185,11 @@ public class UpdateOrderController {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
-    }
-
-    private void populateOrders() {
-
-
-        // Get database connection object
-        try {
-            Connection conn = connection.Connect.getConnection();
-
-            // Get list of orders from database
-            OrdersDao ordersAccessor = new OrdersDao(conn);
-            List<Order> orderData = ordersAccessor.getAll();
-            ObservableList<Order> orderDataOl = FXCollections.observableArrayList(orderData);
-
-            // Display the orders in the listview
-            lvOrders.setItems(orderDataOl);
-            lvOrders.setCellFactory(param -> new ListCell<Order>() {
-                @Override
-                protected void updateItem(Order item, boolean empty) {
-                    super.updateItem(item, empty);
-
-                    if (empty || item == null) {
-                        setText(null);
-                    } else {
-                        setText(item.toString());
-                    }
-                }
-            });
-
-
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
     }
 
     private void update(){
 
         try{
-
             // Convert user inputs to their proper type
             int updateOrderNumber = Integer.parseInt(tfOrderNumber.getText());
             java.sql.Date updateOrderDate = java.sql.Date.valueOf(dpOrderDate.getValue());
@@ -250,7 +213,11 @@ public class UpdateOrderController {
 
             // Remove previous order details
             OrderDetailsDao  orderDetailsDaoDelete = new OrderDetailsDao(connection.Connect.getConnection());
-            orderDetailsDaoDelete.delete(updateOrderDetails.get(0)); //todo: will throw error if this array is empty!
+
+            // Delete all order details entries for the given order number
+            if(! updateOrderDetails.isEmpty()){
+                orderDetailsDaoDelete.delete(updateOrderDetails.get(0));
+            }
 
             // Insert order details
             OrderDetailsDao  orderDetailsDaoInsert = new OrderDetailsDao(connection.Connect.getConnection());
@@ -258,11 +225,22 @@ public class UpdateOrderController {
                 orderDetailsDaoInsert.insert(x);
             }
 
+            // Display success message
+            // Show success message
+            Alert alert = new Alert(Alert.AlertType.INFORMATION, "Order successfully updated", ButtonType.OK);
+            alert.showAndWait();
+
+            if (alert.getResult() == ButtonType.OK) {
+                // Do stuff?
+            }
         }
+
         catch (Exception e){
-            e.printStackTrace(); //TODO: Display error message
+
+            Alert alert = new Alert(Alert.AlertType.ERROR, e.getMessage(), ButtonType.OK);
+            alert.showAndWait();
+
+            e.printStackTrace();
         }
-
     }
-
 }

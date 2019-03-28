@@ -2,58 +2,51 @@ package controller;
 
 import accessdata.OrderDetailsDao;
 import accessdata.OrdersDao;
+import com.mysql.cj.jdbc.exceptions.SQLError;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TextField;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
+import javafx.stage.Stage;
 import models.Order;
 import models.OrderDetails;
 
+import java.io.IOException;
 import java.math.BigDecimal;
+import java.sql.SQLException;
 
 public class AddOrderController {
 
+    private LoginManager lm;
+
     @FXML
     private TextField tfOrderNumber;
-
     @FXML
     private TextField tfStatus;
-
     @FXML
     private TextField tfComments;
-
     @FXML
     private TextField tfCustomerNumber;
-
     @FXML
     private DatePicker dpOrderDate;
-
     @FXML
     private DatePicker dpRequiredDate;
-
     @FXML
     private DatePicker dpShippedDate;
-
     @FXML
     private TextField tfProductCode;
-
     @FXML
     private TextField tfQuantityOrdered;
-
     @FXML
     private TextField tfPriceEach;
-
     @FXML
     private TextField tfOrderLineNumber;
-
     @FXML
     private Button btnAddDetail;
-
     @FXML
     private ListView<OrderDetails> lvDetails;
-
     @FXML
     private Button btnInsert;
 
@@ -82,33 +75,37 @@ public class AddOrderController {
         btnInsert.setOnAction(actionEvent -> {
             this.insert();
         });
+    }
+
+    // For going back to main screen
+    public void initAdd(final LoginManager loginManager) {
+
+        this.lm = loginManager;
 
     }
 
     private void addOrderDetail(){
 
-        try{
+        try {
             // Convert text fields to their proper data types
             int addOrderNumber = Integer.parseInt(tfOrderNumber.getText());
             int addQuantityOrdered = Integer.parseInt(tfQuantityOrdered.getText());
             BigDecimal addPriceEach = new BigDecimal(tfPriceEach.getText());
-            Short addOrderLineNumber =  new Short(tfOrderLineNumber.getText());
+            Short addOrderLineNumber = new Short(tfOrderLineNumber.getText());
 
             // Add an OrderDetails object to the listview
-            lvDetails.getItems().add(new OrderDetails(addOrderNumber,tfProductCode.getText(),addQuantityOrdered,addPriceEach,addOrderLineNumber));
+            lvDetails.getItems().add(new OrderDetails(addOrderNumber, tfProductCode.getText(), addQuantityOrdered, addPriceEach, addOrderLineNumber));
 
 
         }catch (Exception e){
             e.printStackTrace();
         }
-
     }
 
 
     private void insert(){
 
         try{
-
             // Convert user inputs to their proper type
             int addOrderNumber = Integer.parseInt(tfOrderNumber.getText());
             java.sql.Date addOrderDate = java.sql.Date.valueOf(dpOrderDate.getValue());
@@ -132,10 +129,34 @@ public class AddOrderController {
                 orderDetailsDao.insert(x);
             }
 
-        }
-        catch (Exception e){
-            e.printStackTrace(); //TODO: Display error message
+            // Show success message
+            Alert alert = new Alert(Alert.AlertType.INFORMATION, "Order successfully added", ButtonType.OK);
+            alert.showAndWait();
+
+            if (alert.getResult() == ButtonType.OK) {
+
+                lm.displayBaseView("12");
+
+            }
         }
 
+        catch (SQLException se){
+            if(se.getSQLState().startsWith("23")){
+
+                Alert alert = new Alert(Alert.AlertType.ERROR, "Please choose a valid customer number", ButtonType.OK);
+                alert.showAndWait();
+
+                if (alert.getResult() == ButtonType.OK) {
+                    // do stuff?
+                }
+            }
+        }
+        catch (Exception e){
+
+            Alert alert = new Alert(Alert.AlertType.ERROR, e.getMessage(), ButtonType.OK);
+            alert.showAndWait();
+
+            e.printStackTrace();
+        }
     }
 }

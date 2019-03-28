@@ -81,7 +81,6 @@ public class OrdersDao implements Dao<Order> {
         } catch (SQLException e) {
             System.err.println("Got an exception inserting an order");
             System.err.println(e.getMessage());
-            e.printStackTrace();
             throw e;
         }
 
@@ -116,7 +115,6 @@ public class OrdersDao implements Dao<Order> {
         } catch (SQLException e) {
             System.err.println("Got an exception inserting an order");
             System.err.println(e.getMessage());
-            e.printStackTrace();
             throw e;
         }
 

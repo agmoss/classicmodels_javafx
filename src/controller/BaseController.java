@@ -2,31 +2,21 @@ package controller;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
 import javafx.scene.Parent;
-import javafx.scene.control.*;
-import javafx.scene.input.MouseEvent;
+import javafx.scene.Scene;
+import javafx.scene.control.Label;
+import javafx.scene.control.Menu;
+import javafx.scene.control.MenuItem;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
-import javafx.scene.text.Text;
 
 import java.io.IOException;
-import java.net.URL;
-import java.util.ResourceBundle;
 
 public class BaseController {
+    private LoginManager lm;
 
-    @FXML
-    TreeView selectionTreeView;
-    @FXML
-    private ResourceBundle resources;
-    @FXML
-    private URL location;
-    @FXML
-    private Font x1;
-    @FXML
-    private Color x2;
+
     @FXML
     private Font x3;
     @FXML
@@ -37,89 +27,38 @@ public class BaseController {
     private Label sessionLabel;
     @FXML
     private MenuItem miLogout;
+    @FXML
+    private Menu mData;
+    @FXML
+    private MenuItem miAddOrder;
+    @FXML
+    private MenuItem miViewOrders;
 
 
     @FXML
     public void initialize() throws IOException {
-        assert x1 != null : "fx:id=\"x1\" was not injected: check your FXML file 'view.fxml'.";
-        assert x2 != null : "fx:id=\"x2\" was not injected: check your FXML file 'view.fxml'.";
-        assert x3 != null : "fx:id=\"x3\" was not injected: check your FXML file 'view.fxml'.";
-        assert x4 != null : "fx:id=\"x4\" was not injected: check your FXML file 'view.fxml'.";
-        assert selectionTreeView != null : "fx:id=\"selectionTreeView\" was not injected: check your FXML file 'base.fxml'.";
+        assert bpContent != null : "fx:id=\"bpContent\" was not injected: check your FXML file 'base.fxml'.";
         assert miLogout != null : "fx:id=\"miLogout\" was not injected: check your FXML file 'base.fxml'.";
+        assert mData != null : "fx:id=\"mData\" was not injected: check your FXML file 'base.fxml'.";
+        assert miAddOrder != null : "fx:id=\"miAddOrder\" was not injected: check your FXML file 'base.fxml'.";
+        assert miViewOrders != null : "fx:id=\"miViewOrders\" was not injected: check your FXML file 'base.fxml'.";
+        assert sessionLabel != null : "fx:id=\"sessionLabel\" was not injected: check your FXML file 'base.fxml'.";
+        assert x3 != null : "fx:id=\"x3\" was not injected: check your FXML file 'base.fxml'.";
+        assert x4 != null : "fx:id=\"x4\" was not injected: check your FXML file 'base.fxml'.";
 
-        createTree(); // Side Navigation
+        miViewOrders.setOnAction(event -> loadView());
+        miAddOrder.setOnAction(event -> loadAdd());
 
     }
 
-
     // For login
     public void initSessionID(final LoginManager loginManager, String sessionID) {
+
+        this.lm = loginManager;
         sessionLabel.setText(sessionID);
         miLogout.setOnAction(event -> loginManager.logout());
     }
 
-
-    // Side Navigation
-    public void createTree(String... rootItems) {
-
-        //create root
-        TreeItem<String> root = new TreeItem<>("Classic Models");
-        root.setExpanded(true);
-
-        //create child
-        TreeItem<String> itemOrders = new TreeItem<>("Orders");
-        itemOrders.setExpanded(true);
-
-
-        //order options
-        TreeItem<String> itemAdd = new TreeItem<>("Add");
-        itemOrders.setExpanded(true);
-
-        TreeItem<String> itemView = new TreeItem<>("View");
-        itemOrders.setExpanded(true);
-
-        TreeItem<String> itemUpdate = new TreeItem<>("Update");
-        itemOrders.setExpanded(true);
-
-        //root is the parent of itemChild
-        root.getChildren().add(itemOrders);
-        itemOrders.getChildren().add(itemAdd);
-        itemOrders.getChildren().add(itemView);
-        itemOrders.getChildren().add(itemUpdate);
-        selectionTreeView.setRoot(root);
-
-        // Add the onclick event handler
-        selectionTreeView.addEventHandler(MouseEvent.MOUSE_CLICKED, this::handleMouseClicked);
-    }
-
-
-    // Determine the name of the node clicked in the side navigation tree view
-    private void handleMouseClicked(MouseEvent event) {
-        Node node = event.getPickResult().getIntersectedNode();
-        // Accept clicks only on node cells, and not on empty spaces of the TreeView
-        if (node instanceof Text || (node instanceof TreeCell && ((TreeCell) node).getText() != null)) {
-            String name = (String) ((TreeItem) selectionTreeView.getSelectionModel().getSelectedItem()).getValue();
-
-            switch (name) {
-                case "View":
-                    loadContent("view_orders");
-                    break;
-
-                case "Add":
-                    loadContent("add_order");
-                    break;
-
-                case "Update":
-                    loadContent("update_order");
-                    break;
-
-                default:
-                    break;
-
-            }
-        }
-    }
 
     protected void loadContent(String fxml_file) {
 
@@ -132,6 +71,40 @@ public class BaseController {
         }
 
         bpContent.setCenter(root);
+
+    }
+
+    private void loadView(){
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/view_orders.fxml"));
+
+        try {
+
+            bpContent.setCenter(loader.load());
+
+            ViewOrdersController voC = loader.getController();
+
+            voC.initView(bpContent); // Pass object to the login controller
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void loadAdd() {
+
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/add_order.fxml"));
+
+        try {
+
+            bpContent.setCenter(loader.load());
+
+            AddOrderController aoC = loader.getController();
+
+            aoC.initAdd(this.lm); // Pass object to the login controller
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
     }
 }
