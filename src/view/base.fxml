@@ -6,7 +6,6 @@
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.SeparatorMenuItem?>
-<?import javafx.scene.control.TreeView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
@@ -52,12 +51,19 @@
                         <MenuItem mnemonicParsing="false" text="About MyHelloApp" />
                      </items>
                   </Menu>
+            <Menu fx:id="mData" mnemonicParsing="false" text="Data">
+              <items>
+                  <Menu mnemonicParsing="false" text="Orders">
+                    <items>
+                      <MenuItem fx:id="miAddOrder" mnemonicParsing="false" text="Add" />
+                      <MenuItem fx:id="miViewOrders" mnemonicParsing="false" text="View" />
+                    </items>
+                  </Menu>
+              </items>
+            </Menu>
                </menus>
             </MenuBar>
          </top>
-         <left>
-            <TreeView fx:id="selectionTreeView" prefHeight="601.0" prefWidth="220.0" BorderPane.alignment="CENTER" />
-         </left>
          <center>
 
 

@@ -17,6 +17,7 @@ public class LoginManager {
      //Callback on authentication
      //Load main app
     public void authenticated(String sessionID) {
+
         displayBaseView(sessionID);
     }
 
@@ -40,7 +41,7 @@ public class LoginManager {
     }
 
     // Actual application
-    private void displayBaseView(String sessionID) {
+    public void displayBaseView(String sessionID) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/base.fxml"));
 
