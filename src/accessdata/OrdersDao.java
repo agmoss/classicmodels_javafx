@@ -88,7 +88,37 @@ public class OrdersDao implements Dao<Order> {
     }
 
     @Override
-    public void update(Order order, String[] params) {
+    public void update(Order order, String[] params) throws SQLException {
+
+        try{
+            int nRowsUpdated = 0;
+
+            // the mysql insert statement
+            String query = " UPDATE orders SET comments = ?, orderDate = ?, requiredDate=?, shippedDate=?, status = ?, customerNumber = ? WHERE orderNumber = ?";
+
+            // create the mysql insert prepared statement
+            PreparedStatement preparedStmt = conn.prepareStatement(query);
+
+            preparedStmt.setDate (2, (Date) order.getOrderDate()); // TODO: Change date type for these
+            preparedStmt.setDate   (3, (Date) order.getRequiredDate());
+            preparedStmt.setDate(4, (Date) order.getShippedDate());
+            preparedStmt.setString(5,order.getStatus());
+            preparedStmt.setString(1,order.getComments());
+            preparedStmt.setInt    (6, order.getCustomerNumber());
+            preparedStmt.setInt (7, order.getOrderNumber());
+
+            nRowsUpdated += preparedStmt.executeUpdate();
+            System.out.println(String.format("Updated %d row(s) of data.", nRowsUpdated));
+
+            conn.close();
+
+
+        } catch (SQLException e) {
+            System.err.println("Got an exception inserting an order");
+            System.err.println(e.getMessage());
+            e.printStackTrace();
+            throw e;
+        }
 
     }
 

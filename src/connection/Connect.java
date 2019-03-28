@@ -70,7 +70,7 @@ public class Connect {
             Properties properties = new Properties();
             properties.setProperty("user", user);
             properties.setProperty("password", password);
-            properties.setProperty("useSSL", "true");
+            properties.setProperty("useSSL", "false");
             properties.setProperty("verifyServerCertificate", "true");
             properties.setProperty("requireSSL", "false");
             properties.setProperty("serverTimezone", "UTC"); //IMPORTANT
