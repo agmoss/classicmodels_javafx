@@ -121,7 +121,53 @@ public class OrdersDao implements Dao<Order> {
     }
 
     @Override
-    public void delete(Order order) {
+    public void delete(Order order) throws SQLException {
+
+        int nRowsDeleted = 0;
+
+        // Delete the order details
+        try{
+
+            // the mysql insert statement
+            String query = "DELETE FROM orderdetails WHERE orderNumber = ?";
+
+            // create the mysql insert prepared statement
+            PreparedStatement preparedStmt = conn.prepareStatement(query);
+
+            preparedStmt.setInt (1, order.getOrderNumber());
+
+            nRowsDeleted += preparedStmt.executeUpdate();
+            System.out.println(String.format("Deleted %d row(s) of data.", nRowsDeleted));
+
+
+        } catch (SQLException e) {
+            System.err.println("Got an exception deleting order details");
+            System.err.println(e.getMessage());
+            e.printStackTrace();
+            throw e;
+        }
+
+        try{
+            // the mysql insert statement
+            String query = "DELETE FROM orders WHERE orderNumber = ?";
+
+            // create the mysql insert prepared statement
+            PreparedStatement preparedStmt = conn.prepareStatement(query);
+
+            preparedStmt.setInt (1, order.getOrderNumber());
+
+            nRowsDeleted += preparedStmt.executeUpdate();
+            System.out.println(String.format("Deleted %d row(s) of data.", nRowsDeleted));
+
+            conn.close();
+
+
+        } catch (SQLException e) {
+            System.err.println("Got an exception deleting an order");
+            System.err.println(e.getMessage());
+            e.printStackTrace();
+            throw e;
+        }
 
     }
 }

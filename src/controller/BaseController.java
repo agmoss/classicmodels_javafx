@@ -16,7 +16,6 @@ import java.io.IOException;
 public class BaseController {
     private LoginManager lm;
 
-
     @FXML
     private Font x3;
     @FXML
@@ -80,9 +79,7 @@ public class BaseController {
         try {
 
             bpContent.setCenter(loader.load());
-
             ViewOrdersController voC = loader.getController();
-
             voC.initView(bpContent); // Pass object to the login controller
 
         } catch (IOException e) {
@@ -97,9 +94,7 @@ public class BaseController {
         try {
 
             bpContent.setCenter(loader.load());
-
             AddOrderController aoC = loader.getController();
-
             aoC.initAdd(this.lm); // Pass object to the login controller
 
         } catch (IOException e) {

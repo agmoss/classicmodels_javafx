@@ -28,50 +28,35 @@ import java.util.function.Function;
 public class ViewOrdersController {
 
     private BorderPane bp;
-
     @FXML
     private ListView<OrderDetails> lvDetails;
-
     // Orders Table
     @FXML
     private TableView<Order> tvOrders;
-
     @FXML
     private TableColumn<Order, Number> tcOrderNumber;
-
     @FXML
     private TableColumn<Order, Date> tcOrderDate;
-
     @FXML
     private TableColumn<Order, Date> tcRequiredDate;
-
     @FXML
     private TableColumn<Order, Date> tcShippedDate;
-
     @FXML
     private TableColumn<Order, String> tcStatus;
-
     @FXML
     private TableColumn<Order, Integer> tcCustomerNumber;
-
     @FXML
     private TextArea taComments;
-
     @FXML
     private TextArea taOrderSummary;
-
     @FXML
     private ContextMenu cmOrder;
-
     @FXML
     private MenuItem miUpdate;
-
     @FXML
     private MenuItem miDelete;
-
     @FXML
     private BorderPane bpOrders;
-
     @FXML
     void initialize() throws IOException {
 
@@ -98,6 +83,8 @@ public class ViewOrdersController {
         tvOrders.getSelectionModel().selectedItemProperty().addListener((observable) -> displayOrderDetails());
 
         miUpdate.setOnAction(event -> loadUpdate(tvOrders.getSelectionModel().getSelectedItem()));
+
+        miDelete.setOnAction(event -> processDelete(tvOrders.getSelectionModel().getSelectedItem()));
 
     }
 
@@ -160,7 +147,6 @@ public class ViewOrdersController {
 
     }
 
-
     private void populateOrders() {
 
         // Get database connection object
@@ -172,13 +158,15 @@ public class ViewOrdersController {
             List<Order> orderData = ordersAccessor.getAll();
             ObservableList<Order> orderDataOl = FXCollections.observableArrayList(orderData);
 
+            tvOrders.getItems().clear();
             tvOrders.setItems(orderDataOl);
+
             tcOrderNumber.setCellValueFactory(cellData -> new ReadOnlyIntegerWrapper(cellData.getValue().getOrderNumber()));
-            tcOrderDate.setCellValueFactory(cell -> new SimpleObjectProperty<Date>(cell.getValue().getOrderDate()));
-            tcRequiredDate.setCellValueFactory(cell -> new SimpleObjectProperty<Date>(cell.getValue().getRequiredDate()));
-            tcShippedDate.setCellValueFactory(cell -> new SimpleObjectProperty<Date>(cell.getValue().getShippedDate()));
-            tcStatus.setCellValueFactory(cell -> new SimpleObjectProperty<String>(cell.getValue().getStatus()));
-            tcCustomerNumber.setCellValueFactory(cell -> new SimpleObjectProperty<Integer>(cell.getValue().getCustomerNumber()));
+            tcOrderDate.setCellValueFactory(cell -> new SimpleObjectProperty<>(cell.getValue().getOrderDate()));
+            tcRequiredDate.setCellValueFactory(cell -> new SimpleObjectProperty<>(cell.getValue().getRequiredDate()));
+            tcShippedDate.setCellValueFactory(cell -> new SimpleObjectProperty<>(cell.getValue().getShippedDate()));
+            tcStatus.setCellValueFactory(cell -> new SimpleObjectProperty<>(cell.getValue().getStatus()));
+            tcCustomerNumber.setCellValueFactory(cell -> new SimpleObjectProperty<>(cell.getValue().getCustomerNumber()));
 
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
@@ -186,7 +174,6 @@ public class ViewOrdersController {
             e.printStackTrace();
         }
     }
-
 
     public void initalizeContextMenu() {
         miUpdate.setOnAction(new EventHandler<ActionEvent>() {
@@ -200,7 +187,6 @@ public class ViewOrdersController {
             }
         });
     }
-
 
     protected void loadUpdate(Order or) {
 
@@ -219,4 +205,30 @@ public class ViewOrdersController {
 
     }
 
+    protected  void processDelete(Order or){
+
+        try {
+            Connection conn = connection.Connect.getConnection();
+
+            // Get accessor objects
+            OrdersDao ordersAccessor = new OrdersDao(conn);
+            //OrderDetailsDao orderDetailsAccessor = new OrderDetailsDao(conn);
+
+            // Get the details for the order
+            ordersAccessor.delete(or);
+
+            // Repopulate
+            this.populateOrders();
+
+            // Display success message+
+            Alert alert = new Alert(Alert.AlertType.INFORMATION, "Order successfully Deleted", ButtonType.OK);
+            alert.showAndWait();
+
+
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 }
