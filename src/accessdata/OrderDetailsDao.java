@@ -82,8 +82,6 @@ public class OrderDetailsDao implements Dao<OrderDetails> {
             nRowsInserted += preparedStmt.executeUpdate();
             System.out.println(String.format("Updated %d row(s) of data.", nRowsInserted));
 
-            conn.close();
-
 
         } catch (SQLException e) {
             System.err.println("Got an exception inserting an order");
@@ -115,8 +113,6 @@ public class OrderDetailsDao implements Dao<OrderDetails> {
             nRowsUpdated += preparedStmt.executeUpdate();
             System.out.println(String.format("Updated %d row(s) of data.", nRowsUpdated));
 
-            conn.close();
-
 
         } catch (SQLException e) {
             System.err.println("Got an exception inserting an order");
@@ -143,8 +139,6 @@ public class OrderDetailsDao implements Dao<OrderDetails> {
 
             nRowsDeleted += preparedStmt.executeUpdate();
             System.out.println(String.format("Deleted %d row(s) of data.", nRowsDeleted));
-
-            conn.close();
 
 
         } catch (SQLException e) {

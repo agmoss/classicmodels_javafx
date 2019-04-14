@@ -6,34 +6,45 @@
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
-
-<AnchorPane prefHeight="610.0" prefWidth="859.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.AddOrderController">
+<AnchorPane prefHeight="1000" prefWidth="1200" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.AddOrderController">
    <children>
-      <TextField fx:id="tfOrderNumber" layoutX="376.0" layoutY="100.0" />
-      <TextField fx:id="tfStatus" layoutX="376.0" layoutY="244.0" />
-      <TextField fx:id="tfComments" layoutX="376.0" layoutY="279.0" />
-      <TextField fx:id="tfCustomerNumber" layoutX="376.0" layoutY="314.0" />
-      <Label layoutX="265.0" layoutY="105.0" text="Order Number:" />
-      <Label layoutX="312.0" layoutY="249.0" text="Status:" />
-      <Label layoutX="285.0" layoutY="284.0" text="Comments:" />
-      <Label layoutX="240.0" layoutY="319.0" text="Customer Number:" />
-      <DatePicker fx:id="dpOrderDate" layoutX="376.0" layoutY="138.0" />
-      <DatePicker fx:id="dpRequiredDate" layoutX="376.0" layoutY="171.0" />
-      <DatePicker fx:id="dpShippedDate" layoutX="376.0" layoutY="206.0" />
-      <Label layoutX="287.0" layoutY="143.0" text="Order Date:" />
-      <Label layoutX="263.0" layoutY="176.0" text="Required Date:" />
-      <Label layoutX="276.0" layoutY="211.0" text="Shipped Date:" />
-      <TextField fx:id="tfProductCode" layoutX="140.0" layoutY="421.0" prefHeight="26.0" prefWidth="112.0" />
-      <TextField fx:id="tfQuantityOrdered" layoutX="270.0" layoutY="421.0" prefHeight="26.0" prefWidth="112.0" />
-      <TextField fx:id="tfPriceEach" layoutX="397.0" layoutY="421.0" prefHeight="26.0" prefWidth="112.0" />
-      <TextField fx:id="tfOrderLineNumber" layoutX="523.0" layoutY="421.0" prefHeight="26.0" prefWidth="124.0" />
-      <Button fx:id="btnAddDetail" layoutX="682.0" layoutY="421.0" mnemonicParsing="false" text="+" />
-      <ListView fx:id="lvDetails" layoutX="135.0" layoutY="465.0" prefHeight="131.0" prefWidth="506.0" />
-      <Label layoutX="152.0" layoutY="397.0" text="Product Code" />
-      <Label layoutX="269.0" layoutY="397.0" text="Quantity Ordered" />
-      <Label layoutX="419.0" layoutY="397.0" text="Price Each" />
-      <Label layoutX="523.0" layoutY="397.0" text="Order Line Number" />
-      <Button fx:id="btnInsert" layoutX="682.0" layoutY="555.0" mnemonicParsing="false" text="Submit New Order" />
+      <TextField fx:id="tfOrderNumber" layoutX="393.0" layoutY="161.0" />
+      <TextField fx:id="tfStatus" layoutX="393.0" layoutY="199.0" />
+      <TextField fx:id="tfComments" layoutX="393.0" layoutY="234.0" />
+      <TextField fx:id="tfCustomerNumber" layoutX="393.0" layoutY="269.0" />
+      <Label layoutX="282.0" layoutY="166.0" text="Order Number:" />
+      <Label layoutX="329.0" layoutY="204.0" text="Status:" />
+      <Label layoutX="302.0" layoutY="239.0" text="Comments:" />
+      <Label layoutX="257.0" layoutY="274.0" text="Customer Number:" />
+      <DatePicker fx:id="dpOrderDate" layoutX="713.0" layoutY="157.0" />
+      <DatePicker fx:id="dpRequiredDate" layoutX="713.0" layoutY="190.0" />
+      <DatePicker fx:id="dpShippedDate" layoutX="713.0" layoutY="225.0" />
+      <Label layoutX="624.0" layoutY="162.0" text="Order Date:" />
+      <Label layoutX="600.0" layoutY="195.0" text="Required Date:" />
+      <Label layoutX="613.0" layoutY="230.0" text="Shipped Date:" />
+      <TextField fx:id="tfProductCode" layoutX="265.0" layoutY="463.0" prefHeight="26.0" prefWidth="138.0" />
+      <TextField fx:id="tfQuantityOrdered" layoutX="410.0" layoutY="463.0" prefHeight="26.0" prefWidth="138.0" />
+      <TextField fx:id="tfPriceEach" layoutX="555.0" layoutY="463.0" prefHeight="26.0" prefWidth="138.0" />
+      <TextField fx:id="tfOrderLineNumber" layoutX="699.0" layoutY="463.0" prefHeight="26.0" prefWidth="140.0" />
+      <Button fx:id="btnAddDetail" layoutX="856.0" layoutY="463.0" mnemonicParsing="false" text="+" />
+      <ListView fx:id="lvDetails" layoutX="265.0" layoutY="507.0" prefHeight="131.0" prefWidth="630.0" />
+      <Label layoutX="290.0" layoutY="439.0" text="Product Code" />
+      <Label layoutX="422.0" layoutY="439.0" text="Quantity Ordered" />
+      <Label layoutX="590.0" layoutY="439.0" text="Price Each" />
+      <Label layoutX="707.0" layoutY="439.0" text="Order Line Number" />
+      <Button fx:id="btnInsert" layoutX="757.0" layoutY="666.0" mnemonicParsing="false" text="Submit New Order" />
+      <Text layoutX="493.0" layoutY="86.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Order Information" textAlignment="CENTER" wrappingWidth="197.9999999999999">
+         <font>
+            <Font size="21.0" />
+         </font>
+      </Text>
+      <Text layoutX="508.0" layoutY="381.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Order Details">
+         <font>
+            <Font size="21.0" />
+         </font>
+      </Text>
    </children>
 </AnchorPane>

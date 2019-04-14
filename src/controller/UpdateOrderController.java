@@ -205,7 +205,7 @@ public class UpdateOrderController {
             // Get order details to be updated to the db
             ObservableList<OrderDetails> updateOrderDetails = lvDetails.getItems();
 
-            // Insert order
+            // Update order
             OrdersDao ordersDao = new OrdersDao(connection.Connect.getConnection());
             String[] testStringArray = new String[]{"a", "b", "c"};
             ordersDao.update(updateOrder,testStringArray);
