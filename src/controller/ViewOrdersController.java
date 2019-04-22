@@ -158,7 +158,13 @@ public class ViewOrdersController {
             List<Order> orderData = ordersAccessor.getAll();
             ObservableList<Order> orderDataOl = FXCollections.observableArrayList(orderData);
 
+            // Clear previous data
+            // Clear the listview
+            lvDetails.getItems().clear();
             tvOrders.getItems().clear();
+            taOrderSummary.clear();
+            taComments.clear();
+            // Set new data
             tvOrders.setItems(orderDataOl);
 
             tcOrderNumber.setCellValueFactory(cellData -> new ReadOnlyIntegerWrapper(cellData.getValue().getOrderNumber()));
